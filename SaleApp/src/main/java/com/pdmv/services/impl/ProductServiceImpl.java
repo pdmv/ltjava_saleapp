@@ -30,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
     public void addOrUpdate(Product p) {
         this.proRepo.addOrUpdate(p);
     }
-    
-    
+
+//    @Override
+//    public int countProduct() {
+//        return this.proRepo.countProduct();
+//    }
 }

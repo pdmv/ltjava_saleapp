@@ -17,25 +17,55 @@
     <body>
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="<c:url value="/" />">Sale App</a>
+                <a class="navbar-brand" href="<c:url value="/?page=1" />">Sale App</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="<c:url value="/" />">Trang chủ</a>
+                            <a class="nav-link" href="<c:url value="/?page=1" />">Trang chủ</a>
                         </li>
                         <c:forEach items="${categories}" var="c">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">${c.name}</a>
+                                <c:url value="/" var="myUrl">
+                                    <c:param name="cateId" value="${c.id}" />
+                                </c:url>
+                                <a class="nav-link" href="${myUrl}">${c.name}</a>
                             </li>
                         </c:forEach>
                     </ul>
                 </div>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="text" placeholder="Nhập từ khoá..." name="kw">
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </form>
             </div>
         </nav>
-        <h1>Hello World!</h1>
-       ${products}
+
+        <div class="row">
+            <c:forEach items="${products}" var="p">
+                <div class="col-md-3 col-12" style="padding: 1rem;">
+                    <div class="card">
+                        <img class="card-img-top" src="${p.image}" alt="${p.name}">
+                        <div class="card-body">
+                            <h4 class="card-title">${p.name}</h4>
+                            <p class="card-text">${p.price}</p>
+                            <a href="#" class="btn btn-primary">Xem chi tiết</a>
+                            <a href="#" class="btn btn-danger">Mua hàng</a>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+        <c:if test="${pages > 1}">
+            <ul class="pagination mt-1">
+                <c:forEach var="i" begin="1" end="${pages}">
+                    <li class="page-item">
+                        <a class="page-link" href="<c:url value="/?page=${i}" />">${i}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:if>
     </body>
 </html>
