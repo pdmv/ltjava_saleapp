@@ -88,16 +88,4 @@ public class ProductRepositoryImpl implements ProductRepository {
         s.saveOrUpdate(p);
 
     }
-
-//    @Override
-//    public int countProduct() {
-//        Session s = this.factory.getObject().getCurrentSession();
-//        CriteriaBuilder c = s.getCriteriaBuilder();
-//        CriteriaQuery<Long> q = c.createQuery(Long.class);
-//        Root r = q.from(Product.class);
-//        
-//        q.select(c.count(r));
-//        
-//        return s.createQuery(q).getSingleResult().intValue();
-//    }
 }
