@@ -58,14 +58,5 @@
                 </div>
             </c:forEach>
         </div>
-        <c:if test="${pages > 1}">
-            <ul class="pagination mt-1">
-                <c:forEach var="i" begin="1" end="${pages}">
-                    <li class="page-item">
-                        <a class="page-link" href="<c:url value="/?page=${i}" />">${i}</a>
-                    </li>
-                </c:forEach>
-            </ul>
-        </c:if>
     </body>
 </html>
