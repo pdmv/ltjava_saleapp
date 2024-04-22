@@ -30,45 +30,47 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @PropertySource("classpath:configs.properties")
 public class ProductRepositoryImpl implements ProductRepository {
+
     @Autowired
-    private LocalSessionFactoryBean factory;
+    private LocalSessionFactoryBean factoryBean;
     @Autowired
     private Environment env;
-            
 
+    @Override
     public List<Product> getProducts(Map<String, String> params) {
-        Session s = this.factory.getObject().getCurrentSession();
+        Session s = this.factoryBean.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Product> q = b.createQuery(Product.class);
         Root r = q.from(Product.class);
+        q.select(r);
 
-        List<Predicate> predicate = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
 
         String kw = params.get("kw");
         if (kw != null && !kw.isEmpty()) {
-            predicate.add(b.like(r.get("name"), String.format("%%%s%%", kw)));
+            predicates.add(b.like(r.get("name"), String.format("%%%s%%", kw)));
         }
 
         String fromPrice = params.get("fromPrice");
         if (fromPrice != null && !fromPrice.isEmpty()) {
-            predicate.add(b.greaterThanOrEqualTo(r.get("price"), Double.parseDouble(fromPrice)));
+            predicates.add(b.greaterThanOrEqualTo(r.get("price"), Double.parseDouble(fromPrice)));
         }
 
         String toPrice = params.get("toPrice");
         if (toPrice != null && !toPrice.isEmpty()) {
-            predicate.add(b.lessThanOrEqualTo(r.get("price"), Double.parseDouble(toPrice)));
+            predicates.add(b.lessThanOrEqualTo(r.get("price"), Double.parseDouble(toPrice)));
         }
 
         String cateId = params.get("cateId");
         if (cateId != null && !cateId.isEmpty()) {
-            predicate.add(b.equal(r.get("categoryId"), Integer.parseInt(cateId)));
+            predicates.add(b.equal(r.get("categoryId"), Integer.parseInt(cateId)));
         }
 
-        q.where(predicate.toArray(Predicate[]::new));
+        q.where(predicates.toArray(Predicate[]::new));
         q.orderBy(b.desc(r.get("id")));
 
         Query query = s.createQuery(q);
-        
+
         String p = params.get("page");
         if (p != null && !p.isEmpty()) {
             int pageSize = Integer.parseInt(env.getProperty("products.pageSize").toString());
@@ -76,16 +78,33 @@ public class ProductRepositoryImpl implements ProductRepository {
             query.setFirstResult(start);
             query.setMaxResults(pageSize);
         }
-        
+
         List<Product> products = query.getResultList();
 
         return products;
 
     }
 
+    @Override
     public void addOrUpdate(Product p) {
-        Session s = this.factory.getObject().getCurrentSession();
-        s.saveOrUpdate(p);
+        Session s = this.factoryBean.getObject().getCurrentSession();
+        if (p.getId() == null || p.getId() == 0) {
+            s.save(p);
+        } else {
+            s.update(p);
+        }
+    }
 
+    @Override
+    public Product getProductById(int id) {
+        Session s = this.factoryBean.getObject().getCurrentSession();
+        return s.get(Product.class, id);
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        Session s = this.factoryBean.getObject().getCurrentSession();
+        Product p = this.getProductById(id);
+        s.delete(p);
     }
 }
