@@ -8,3 +8,4 @@ function deleteProduct(url, id) {
             alert("Something wrong!");
     });
 }
+

@@ -35,4 +35,4 @@
     </c:forEach>
 </table>
 
-    <script src="<c:url value="/js/script.js"/>"></script>
+<script src="<c:url value="/js/script.js"/>"></script>
