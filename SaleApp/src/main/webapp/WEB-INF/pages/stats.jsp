@@ -51,12 +51,12 @@
         <form>
             <div class="form-floating mb-3 mt-3">
                 <input type="number" class="form-control" id="year" placeholder="Năm" name="year">
-                <label for="email">Năm</label>
+                <label for="year">Năm</label>
             </div>
             <div class="form-floating">
                 <select class="form-select" id="period" name="period">
                     <option value="MONTH">Tháng</option>
-                    <option value="QUARTER">Năm</option>
+                    <option value="QUARTER">Quý</option>
                 </select>
                 <label for="period" class="form-label">Khoảng thời gian:</label>
             </div>
