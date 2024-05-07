@@ -28,8 +28,9 @@
             <td>${String.format("%,d", p.price)} VNĐ</td>
             <td>
                 <c:url value="/api/products/${p.id}" var="url" />
+                <c:url value="/api/products/${p.id}/" var="urlDelete" />
                 <a class="btn btn-info" href="<c:url value="/products/${p.id}" />">Cập nhật</a>
-                <button onclick="deleteProduct('${url}',${p.id})" class="btn btn-danger">Xóa</button>
+                <button onclick="deleteProduct('${urlDelete}',${p.id})" class="btn btn-danger">Xóa</button>
             </td>
         </tr>
     </c:forEach>
