@@ -27,8 +27,14 @@ public class StatsController {
         model.addAttribute("statsRevenue", this.statsService.statsRevenueByProduct());
         
         String period = params.getOrDefault("period", "MONTH");
-        String year = params.getOrDefault("year", String.valueOf(LocalDate.now().getYear()));
+        String year = params.get("year");
+        if (year == null || year.isBlank()) {
+            year = String.valueOf(LocalDate.now().getYear());
+        }
+        
         model.addAttribute("statsRevenueByPeriod", this.statsService.statsRevenueByPeriod(Integer.parseInt(year), period));
+        model.addAttribute("period", period);
+        model.addAttribute("year", year);
         
         return "stats";
     }

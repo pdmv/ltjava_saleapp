@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Col, Container, Form, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Badge, Button, Col, Container, Form, Nav, Navbar, NavDropdown, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import MySpinner from "./MySpinner";
 
@@ -28,43 +28,39 @@ const Header = () => {
         nav(`/?cateId=${cateId}`);
     }
 
+    const submit = (e) => {
+        e.preventDefault();
+        nav(`/?kw=${q}`);
+    }
+
     return (
-        <>
-            {categories === null ? <MySpinner /> : <>
-                <Navbar expand="lg" className="bg-body-tertiary">
-                    <Container>
-                        <Navbar.Brand href="#home">E-commerce Website</Navbar.Brand>
-                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="me-auto">
-                                <Nav.Link href="#home">Trang chủ</Nav.Link>
-                                <Nav.Link href="#link">Link</Nav.Link>
-                                <NavDropdown title="Danh mục" id="basic-nav-dropdown">
-                                    {categories.map(c => <NavDropdown.Item key={c.id} href="#" onClick={e => search(e, c.id)}>{c.name}</NavDropdown.Item>)}
-                                </NavDropdown>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                    <Form inline>
+        categories === null ? <MySpinner /> :
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand href="">Apple Simple Store</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Link to="/" className="nav-link">Trang chủ</Link>
+                            <NavDropdown title="Danh mục" id="basic-nav-dropdown">
+                                {categories.map(c => <NavDropdown.Item key={c.id} href="#" onClick={e => search(e, c.id)}>{c.name}</NavDropdown.Item>)}
+                            </NavDropdown>
+                            <Link to="/cart" className="nav-link">&#128722; <Badge bg="danger">0</Badge></Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                    <Form inline onSubmit={submit}>
                         <Row>
                             <Col xs="auto">
-                                <Form.Control
-                                    type="text" value={q} onChange={e => {
-                                        setQ(e.target.value);
-                                        nav(`/?kw=${q}`)
-                                    }}
-                                    placeholder="Tìm sản phẩm"
-                                    className=" mr-sm-2"
-                                />
+                                <Form.Control type="text" value={q} onChange={e => setQ(e.target.value)} placeholder="Tìm sản phẩm..." className="mr-sm-2" />
+
                             </Col>
-                            {/* <Col xs="auto">
-                        <Button type="submit">Submit</Button>
-                    </Col> */}
+                            <Col xs="auto">
+                                <Button type="submit">Tìm kiếm</Button>
+                            </Col>
                         </Row>
                     </Form>
-                </Navbar>
-            </>}
-        </>
+                </Container>
+            </Navbar>
     );
 }
 

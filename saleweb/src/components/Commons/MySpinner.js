@@ -1,6 +1,6 @@
 import { Spinner } from "react-bootstrap"
 
-const MySpinner = ({animation="grow", variant="success"}) => {
+const MySpinner = ({ animation = "grow", variant = "success" }) => {
     return <Spinner animation={animation} variant={variant} />
 }
 

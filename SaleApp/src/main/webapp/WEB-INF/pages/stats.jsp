@@ -45,8 +45,13 @@
             </c:forEach>
         </table>
         <div class="alert alert-success">
-            <h4>Năm: ${param.year}</h4>
-            <h4>Khoảng thời gian: ${param.period}</h4>
+            <h4>Năm: ${year}</h4>
+            <h4>Khoảng thời gian:
+                <c:choose>
+                    <c:when test="${period=='MONTH'}"> Tháng</c:when>
+                    <c:otherwise> Quý</c:otherwise>
+                </c:choose>
+            </h4>
         </div>
         <form>
             <div class="form-floating mb-3 mt-3">
