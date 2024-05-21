@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,7 +41,7 @@ public class ApiProductController {
         return new ResponseEntity<>(this.prodService.getProducts(params), HttpStatus.OK);
     }
 
-    @GetMapping(path="/products/{productId}/", produces = {
+    @GetMapping(path = "/products/{productId}/", produces = {
         MediaType.APPLICATION_JSON_VALUE
     })
     public ResponseEntity<Product> retrieve(@PathVariable(value = "productId") int id) {
@@ -51,4 +53,35 @@ public class ApiProductController {
     public void destroy(Model model, @PathVariable(value = "productId") int id) {
         this.prodService.deleteProduct(id);
     }
+
+    @PutMapping(path = "/products/{productId}/", produces = {
+        MediaType.APPLICATION_JSON_VALUE
+    })
+    public ResponseEntity<Product> update(@PathVariable(value = "productId") int id, @RequestBody Map<String, Object> productDetails) {
+        // Kiểm tra xem productDetails có tồn tại và có dữ liệu hay không
+        if (productDetails == null || productDetails.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // Lấy thông tin sản phẩm từ dữ liệu JSON
+        String name = (String) productDetails.get("name");
+        String description = (String) productDetails.get("description");
+        Long price = (Long) productDetails.get("price");
+
+        // Lấy sản phẩm từ cơ sở dữ liệu
+        Product existingProduct = prodService.getProductById(id);
+        if (existingProduct == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Cập nhật thông tin sản phẩm
+        existingProduct.setName(name);
+        existingProduct.setDescription(description);
+        existingProduct.setPrice(price);
+
+        // Lưu sản phẩm đã cập nhật vào cơ sở dữ liệu
+        this.prodService.addOrUpdate(existingProduct);
+        return new ResponseEntity<>(this.prodService.getProductById(id), HttpStatus.OK);
+    }
+
 }

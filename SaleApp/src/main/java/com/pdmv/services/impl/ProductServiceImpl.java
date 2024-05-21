@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addOrUpdate(Product p) {
-        if (!p.getFile().isEmpty()) {
+        if (p.getFile() != null && !p.getFile().isEmpty()) {
             try {
                 Map res = this.cloudinary.uploader().upload(p.getFile().getBytes(),
                         ObjectUtils.asMap("resource_type", "auto"));
