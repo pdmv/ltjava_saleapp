@@ -6,6 +6,7 @@ package com.pdmv.services.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.pdmv.pojo.Cart;
 import com.pdmv.pojo.Product;
 import com.pdmv.repositories.ProductRepository;
 import com.pdmv.services.ProductService;
@@ -57,5 +58,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(int id) {
         this.proRepo.deleteProduct(id);
+    }
+
+    @Override
+    public boolean addReceipt(Map<String, Cart> cart) {
+        if (cart != null)
+            return this.proRepo.addReceipt(cart);
+        return false;
     }
 }

@@ -4,8 +4,6 @@
  */
 package com.pdmv.configs;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.pdmv.formatters.CategoryFormatter;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +30,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = {
     "com.pdmv.controllers",
     "com.pdmv.repositories",
-    "com.pdmv.services"
+    "com.pdmv.services",
+    "com.pdmv.components"
 })
 public class WebAppContextConfig implements WebMvcConfigurer {
 

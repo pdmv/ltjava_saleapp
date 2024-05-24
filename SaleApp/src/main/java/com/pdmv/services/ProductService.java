@@ -4,6 +4,7 @@
  */
 package com.pdmv.services;
 
+import com.pdmv.pojo.Cart;
 import com.pdmv.pojo.Product;
 import java.util.List;
 import java.util.Map;
@@ -17,4 +18,5 @@ public interface ProductService {
     void addOrUpdate(Product p);
     Product getProductById(int id);
     void deleteProduct(int id);
+    boolean addReceipt(Map<String, Cart> cart);
 }

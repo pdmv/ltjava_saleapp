@@ -4,14 +4,13 @@
  */
 package com.pdmv.repositories;
 
-import com.pdmv.pojo.User;
+import com.pdmv.pojo.Cart;
+import java.util.Map;
 
 /**
  *
- * @author admin
+ * @author phamdominhvuong
  */
-public interface UserRepository {
-    User getUserByUsername(String username);
-    void addUser(User user);
-    boolean authUser(String username, String password);
+public interface ReceiptRepository {
+    boolean addReceipt(Map<String, Cart> carts);
 }

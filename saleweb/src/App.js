@@ -1,23 +1,38 @@
-import './App.css';
-import Home from './components/Product/Home';
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Footer from "./components/Commons/Footer";
+import Header from "./components/Commons/Header";
+import Home from "./components/Product/Home";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ProductDetails from './components/Product/ProductDetails';
-import Header from './components/Commons/Header';
-import { Container } from 'react-bootstrap';
-import Cart from './components/Product/Cart';
+import { Container } from "react-bootstrap";
+import Cart from "./components/Product/Cart";
+import { CartContext, MyDispatchContext, MyUserContext } from "./configs/Contexts";
+import { CartReducer, MyUserReducer } from "./configs/Reducers";
+import { useReducer } from "react";
+import Login from "./components/Product/Login";
+import Register from "./components/Product/Register";
 
-function App() {
+const App = () => {
+  const [value, dispatch] = useReducer(CartReducer, 0);
+  const [user, useDispatch] = useReducer(MyUserReducer, null);
+
   return (
     <BrowserRouter>
-      <Header />
-      <Container>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/products/:productId' element={<ProductDetails />} />
-          <Route path="/cart" element={<Cart />} />
-        </Routes>
-      </Container>
+      <MyUserContext.Provider value={user}>
+        <MyDispatchContext.Provider value={useDispatch}>
+          <CartContext.Provider value={[value, dispatch]}>
+            <Header />
+            <Container>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </Container>
+            <Footer />
+          </CartContext.Provider>
+        </MyDispatchContext.Provider>
+      </MyUserContext.Provider>
     </BrowserRouter>
   );
 }
